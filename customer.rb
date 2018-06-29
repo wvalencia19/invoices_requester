@@ -7,16 +7,11 @@ class Customer
     @customer_id = customer_id
   end
 
-  def binary_crawling_invoices(date_init, date_fin)
-    date_init_arr = date_init.split("-")
-    date_fin_arr = date_fin.split("-")
-    date_init = Time.new(date_init_arr[0], date_init_arr[1], date_init_arr[2])
-    date_fin = Time.new(date_fin_arr[0], date_fin_arr[1], date_fin_arr[2])
-    date_init_timestamp = date_init.to_i
-    date_fin_timestamp = date_fin.to_i
+  def binary_crawling_invoices(date_init_timestamp, date_fin_timestamp)
     calls = 0
     total_invoices = 0
     crawl_invoice = CrawlInvoice.new(@customer_id)
+    origin_fin = date_fin_timestamp
     while true
       medium = date_init_timestamp + ((date_fin_timestamp - date_init_timestamp) / 2)
 
@@ -32,7 +27,7 @@ class Customer
       new_day_fin = new_date_fin.day
       new_date_fin_str = "#{new_year_fin}-#{new_month_fin}-#{new_day_fin}"
 
-      if new_date_init.to_i >= date_fin.to_i
+      if new_date_init.to_i >= origin_fin
         break
       end
 
@@ -45,7 +40,7 @@ class Customer
       else
         date_init_timestamp = date_fin_timestamp
         date_init_timestamp += SECONDS_DAY
-        date_fin_timestamp = date_fin.to_i
+        date_fin_timestamp = origin_fin
         total_invoices += invoices.to_i
       end
     end
@@ -62,18 +57,18 @@ class Customer
     last_month_days = (date_init..date_fin).select {|d| d.day == 1}.map {|d| d - 1}
 
     # First call
-    calls, invoices = binary_crawling_invoices(date_init_str, last_month_days[0].to_s)
+    calls, invoices = binary_crawling_invoices(date_init.to_time.to_i, last_month_days[0].to_time.to_i)
     total_calls += calls
     total_invoices += invoices
 
     for i in  0...last_month_days.size - 1
-      calls, invoices =binary_crawling_invoices((last_month_days[i] + 1).to_s, last_month_days[i+1].to_s)
+      calls, invoices =binary_crawling_invoices((last_month_days[i] + 1).to_time.to_i, last_month_days[i+1].to_time.to_i)
       total_calls += calls
       total_invoices += invoices
     end
 
     # Last call
-    calls, invoices = binary_crawling_invoices((last_month_days[-1] + 1).to_s, date_fin_str)
+    calls, invoices = binary_crawling_invoices((last_month_days[-1] + 1).to_time.to_i, date_fin.to_time.to_i)
     total_calls += calls
     total_invoices += invoices
 
@@ -82,4 +77,5 @@ class Customer
 
   end
 end
+
 
