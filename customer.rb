@@ -12,11 +12,10 @@ class Customer
     date_fin_arr = date_fin.split("-")
     date_init = Time.new(date_init_arr[0], date_init_arr[1], date_init_arr[2])
     date_fin = Time.new(date_fin_arr[0], date_fin_arr[1], date_fin_arr[2])
-
     date_init_timestamp = date_init.to_i
     date_fin_timestamp = date_fin.to_i
     calls = 0
-
+    total_invoices = 0
     crawl_invoice = CrawlInvoice.new(@customer_id)
     while true
       medium = date_init_timestamp + ((date_fin_timestamp - date_init_timestamp) / 2)
@@ -37,20 +36,20 @@ class Customer
         break
       end
 
-      total_invoices = crawl_invoice.get_total_invoices(new_date_init_str,
-                                                        new_date_fin_str).body
+      invoices = crawl_invoice.get_total_invoices(new_date_init_str,
+                                                  new_date_fin_str).body
       calls += 1
 
-      if total_invoices.include?("resultados")
+      if invoices.include?("resultados")
         date_fin_timestamp = medium
       else
         date_init_timestamp = date_fin_timestamp
         date_init_timestamp += SECONDS_DAY
         date_fin_timestamp = date_fin.to_i
+        total_invoices += invoices.to_i
       end
-
     end
-    return calls, total_invoices.to_i
+    return calls, total_invoices
   end
 
   def crawling_cutomer_total_invoices(date_init_str, date_fin_str)
@@ -83,6 +82,4 @@ class Customer
 
   end
 end
-
-
 
