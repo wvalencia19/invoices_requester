@@ -5,7 +5,7 @@ MAINTAINER Wilson Valencia <wilval7126@gmail.com>
 RUN apk update && apk upgrade
 
 # Install ruby and ruby-bundler
-RUN apk add ruby-dev build-base ruby ruby-bundler bash ruby-irb
+RUN apk add ruby-dev build-base ruby ruby-bundler bash 
 
 # Clean APK cache
 RUN rm -rf /var/cache/apk/*
