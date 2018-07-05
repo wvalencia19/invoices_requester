@@ -24,28 +24,28 @@ class Customer
     total_invoices = 0
     calls = 0
     invoices = 0
-    last_month_days = (date_init..date_fin).select {|d| d.day == 1}.map {|d| d - 1}
+    last_month_days = (date_init..date_fin).select { |d| d.day == 1 }.map { |d| d - 1 }
 
     if are_same_month_dates?(date_init, date_fin)
       return @searcher.binary_crawling_invoices(@customer_id,
-                                             date_init.to_time.to_i,
-                                             date_fin.to_time.to_i)
+                                                date_init.to_time.to_i,
+                                                date_fin.to_time.to_i)
     end
 
     total_calls += calls
     total_invoices += invoices
 
-    for i in  0...last_month_days.size - 1
+    for i in 0...last_month_days.size - 1
       calls, invoices = @searcher.binary_crawling_invoices(@customer_id,
-                                                        (last_month_days[i] + 1).to_time.to_i,
-                                                        last_month_days[i+1].to_time.to_i)
+                                                           (last_month_days[i] + 1).to_time.to_i,
+                                                           last_month_days[i + 1].to_time.to_i)
       total_calls += calls
       total_invoices += invoices
     end
 
     calls, invoices = @searcher.binary_crawling_invoices(@customer_id,
-                                                      (last_month_days[-1] + 1).to_time.to_i,
-                                                      date_fin.to_time.to_i)
+                                                         (last_month_days[-1] + 1).to_time.to_i,
+                                                         date_fin.to_time.to_i)
     total_calls += calls
     total_invoices += invoices
 

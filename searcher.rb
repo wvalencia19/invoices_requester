@@ -1,19 +1,15 @@
 class Searcher
-
   def initialize(crawl_invoice)
     @crawl_invoice = crawl_invoice
   end
 
   def binary_crawling_invoices(customer_id, date_init, date_fin)
-
     return 0, 0 if date_fin < date_init
-
     calls = 0
     total_invoices = 0
     origin_fin = date_fin
     while true
-      medium = date_init + ((date_fin - date_init) / 2)
-
+      medium = date_init + ((date_fin - date_init)/2)
       new_date_init = Time.at(date_init)
       new_year_init = new_date_init.year
       new_month_init = new_date_init.month

@@ -38,7 +38,7 @@ RSpec.describe "customer crawl invoices" do
       calls, invoices = @customer.crawling_cutomer_total_invoices("2017-1-1",
                                                                   "2017-1-15")
       expect(invoices).to be < 100
-      expect(calls).to eq  1
+      expect(calls).to eq 1
     end
   end
 
@@ -63,12 +63,12 @@ RSpec.describe "mock customer crawl invoices" do
     it "get total invoices" do
       times = 3
       expect(@customer.searcher).to receive(:binary_crawling_invoices)
-                                .exactly(times).times
-                                .and_return([@double_calls, @double_invoices])
+                                    .exactly(times).times
+                                    .and_return([@double_calls, @double_invoices])
       calls, invoices = @customer.crawling_cutomer_total_invoices("2017-1-1",
                                                                   "2017-3-30")
       expect(invoices).to eq @double_invoices * times
-      expect(calls).to eq  @double_calls * times
+      expect(calls).to eq @double_calls * times
     end
   end
 
@@ -81,7 +81,7 @@ RSpec.describe "mock customer crawl invoices" do
       calls, invoices = @customer.crawling_cutomer_total_invoices("2016-12-1",
                                                                   "2017-1-1")
       expect(invoices).to eq @double_invoices * times
-      expect(calls).to eq  @double_calls * times
+      expect(calls).to eq @double_calls * times
     end
   end
 
@@ -94,7 +94,7 @@ RSpec.describe "mock customer crawl invoices" do
       calls, invoices = @customer.crawling_cutomer_total_invoices("2017-1-1",
                                                                   "2017-12-31")
       expect(invoices).to eq @double_invoices * times
-      expect(calls).to eq  @double_calls * times
+      expect(calls).to eq @double_calls * times
     end
   end
 end
