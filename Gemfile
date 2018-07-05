@@ -1,4 +1,4 @@
-main.rbsource 'https://rubygems.org'
+source 'https://rubygems.org'
 
 gem 'rspec', '~> 3.0'
 gem 'json'
